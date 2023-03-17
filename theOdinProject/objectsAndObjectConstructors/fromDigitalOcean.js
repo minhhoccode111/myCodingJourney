@@ -67,3 +67,26 @@ Warrior.prototype.attack = function () {
 Healer.prototype.heal = function () {
   return `${this.name} casts ${this.spell}`;
 };
+//At this point, we'll create out character with the two new character classes available.
+const hero2 = new Warrior("Minh", 1, "machine guns");
+const hero3 = new Healer("Hoang", 1, "cure");
+//hero2 is now recognized as a Warrior with the new properties
+console.log(hero2); //Warrior {name:'Minh',level:1,weapon:'machine guns'}
+//We can use the new methods we set on the Warrior prototype
+hero2.attack();
+//console: 'Minh attack with machine guns'
+//But what happens if we try to use methods further down the prototype chain?
+hero2.greet(); //Error 'hero2.greet() is not a function'
+//Prototype properties and methods are not automatically linked when you use call() to chain constructors. We will use Object.setPrototypeOf() to link the properties in the Hero constructor to the Warrior and Healer constructors, making sure to put it before any additional methods.
+Object.setPrototypeOf(Warrior.prototype, Hero.prototype);
+Object.setPrototypeOf(Healer.prototype, Hero.prototype);
+//All other prototype methods added below
+
+//Now we can successfully use prototype methods from Hero on an instance of a Warrior or Healer.
+hero2.greet(); //'Minh say hello'
+
+//With this code we've created out Hero constructor with the base properties, created two character constructor called Warrior and Healer from the original constructor, added methods to the prototypes and created individual character instances
+
+//CONCLUSION
+//Javascript is a prototype-based language, and function differently than the traditional class-based paradigm that many other object-oriented languages use
+//We just learned how prototypes work in JavaScript, and how to link object properties and methods via the hidden [[Prototype]] property that all objects share. We also learned how to create custom constructor functions and how prototype inheritance works to pass down property and method values.
