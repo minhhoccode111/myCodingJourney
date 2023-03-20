@@ -108,4 +108,52 @@ Student.prototype.sayName = function () {
 Student.prototype.goToProm = function () {
   return `Ey... wanna go to prom with me?`;
 };
-//if you're using constructor
+//if you're using constructors to make your objects it is best to define functions on the prototype of that object. Doing so means that a single instance of each function will be shared between all of the Student objects. If we declare the function directly in to constructor, like we did when they were first introduced, that function would be duplicated every time a new Student is created. In this example, that wouldn't really matter much, but in a project that is creating thousands of objects, it really can make a difference.
+
+//RECOMMENDED METHOD FOR PROTOTYPAL INHERITANCE
+//So far you have seen several ways of making an object inherit the prototype from another object. At this point in history, the recommended way of setting the prototype of an object is Object.create()
+//Object.create() very simple returns a new object with the specified prototype and any additional properties you want to add. For our purposes, you use it like so:
+function Pupil() {}
+
+Pupil.prototype.sayName = function () {
+  return this.name;
+};
+function FourthGrader(name) {
+  this.name = name;
+  this.grade = 4;
+}
+FourthGrader.prototype = Object.create(Pupil.prototype);
+
+const binh = new FourthGrader("binh");
+console.log(binh.sayName()); //console.logs "binh"
+console.log(binh.grade); //4
+//You can probably figure out what's going on here. After creating the constructor for FourthGrader, we set its prototype to a new object with the prototype Pupil.prototype i.e an empty object with its __proto__ pointing to Pupil.prototype
+
+//WARNING: This doesn't work
+// FourthGrader.prototype = Pupil.prototype;//this doesn't work
+//because it will literally set FourthGrader's prototype to Pupil.prototype (i.e not a copy of Pupil.prototype), which could cause problems if you want to edit something in the future. Consider one more example:
+function ErrorPupil() {}
+ErrorPupil.prototype.sayName = function () {
+  return this.name;
+};
+function ErrorFourthGrader(name) {
+  this.name = name;
+  this.grade = 4;
+}
+
+//DON'T DO THIS
+ErrorFourthGrader.prototype = ErrorPupil.prototype;
+
+function ErrorThirdGrader(name) {
+  this.name = name;
+  this.grade = 3;
+}
+
+//noooo! Not again!
+ErrorThirdGrader.prototype = ErrorPupil.prototype;
+ErrorThirdGrader.prototype.sayName = function () {
+  return "Hahaha this cause an error!";
+};
+const newPupil = new ErrorFourthGrader("newPupil");
+console.log(newPupil.sayName()); //"Hahaha this cause an error!"
+//If we had used Object.create in this example, then we could safely edit the ErrorThirdGrader.prototype.sayName function without changing the function for ErrorFourthGrader as well.
