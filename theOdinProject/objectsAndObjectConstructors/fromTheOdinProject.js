@@ -58,3 +58,40 @@ function gameOver(winningPlayer) {
   console.log(winningPlayer.name + " is the winner!");
 }
 //Or, what if we aren't making a 2 player game, but something more complicated such as an online shopping site with a large inventory? In that case, using object to keep track of an item's name, price, description and other things is the only way to go. Unfortunately, in that type of situation, manually typing out the contents of out object is not feasible either. We need a cleaner way to create out objects, which brings us to...
+//OBJECT CONSTRUCTORS
+//When you have a specific type of object that you need to duplicate like our player or inventory items, a better way to create them is using an object constructor, which is a function that looks like this:
+function Player(name, marker) {
+  this.name = name;
+  this.marker = marker;
+}
+//And which you use by calling the function with the "new" keyword:
+const player = new Player("hoang", "x");
+console.log(player.name); //"hoang"
+//Just like with objects created using the Object Literal method, you can add functions to the object:
+Player.prototype.sayName = function () {
+  console.log(this.name);
+};
+player.sayName(); //"hoang"
+
+const player1 = new Player("kieu", "x");
+const player2 = new Player("tu", "o");
+player1.sayName(); //"kieu"
+player2.sayName(); //"tu"
+
+//EXERCISES
+const bookConstructor = function Book(title, author, pages, read) {
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.read = read;
+  this.info = function () {
+    return `${title} by ${author}, ${pages} pages, read it?: ${read}`;
+  };
+};
+const theHobbit = new bookConstructor(
+  "The Hobbit",
+  "J.R.R. Tolkien",
+  295,
+  false
+);
+console.log(theHobbit.info());
