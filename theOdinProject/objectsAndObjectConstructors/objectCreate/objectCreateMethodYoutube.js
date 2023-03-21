@@ -40,5 +40,21 @@ console.dir(car1.colorOnPrototype);
 //"Red color on prototype"
 console.dir(car2.colorOnPrototype);
 //"Red color on prototype"
+console.dir(car1 instanceof Car);
+console.dir(car2 instanceof Car);
+console.dir(car1 instanceof Object);
 
 //when we change Car.prototype, change will appear on both car1 and car2
+Car.prototype = {
+  getColor() {
+    return this.color;
+  },
+};
+Car.prototype.getColor = function () {
+  return this.color;
+};
+console.dir(car1);
+console.dir(Car.prototype);
+// console.dir(car1.getColor());
+console.dir(Object.prototype.isPrototypeOf(Car));
+console.dir(Car.prototype.isPrototypeOf(car2.__proto__));
