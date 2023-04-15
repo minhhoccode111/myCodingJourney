@@ -43,3 +43,27 @@ console.log(dummy_0.introInProto()); //use method and variable on the prototype 
 
 console.log(objProto.isPrototypeOf(dummy_0)); //true
 console.log(DummyConstructor.prototype === objProto); //true
+
+//how to write a factory method that return a function.
+//example a book factory that take title, author, page and read status
+
+const Book = function aBookFactoryToReturnABookObject(
+  title,
+  author,
+  pages,
+  read
+) {
+  const bookIntro = function () {
+    return `${this.title} ${this.author} ${this.pages}, read it: ${this.read}`;
+  };
+  return { title, author, pages, read, bookIntro };
+};
+
+const book_0 = Book("Headfirst JavaScript", "Minh author", 790, true);
+const book_1 = Book("Headfirst Design Pattern", "Hoang author", 730, false);
+const book_2 = Book("Headfirst HTML and CSS", "Dang author", 490, true);
+const book_3 = Book("Data Structures and Algorithms", "Pro author", 590, false);
+const book_4 = Book("Think like a programmer", "Newbie author", 690, true);
+console.log(book_0);
+console.log(book_0);
+console.log(book_0.bookIntro());
