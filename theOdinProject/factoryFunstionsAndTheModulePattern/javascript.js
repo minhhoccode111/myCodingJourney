@@ -15,8 +15,8 @@ MyConstructor.prototype.intro = function () {
 
 const bla_0 = new MyConstructor("asd", 22, true); //with "new" keyword
 const bla_1 = MyConstructor("def", 23, false); //without "new" keyword
-console.log(bla_0);
-console.log(bla_1);
+// console.log(bla_0);
+// console.log(bla_1);
 
 const objProto = {
   string: "string in objProto",
@@ -39,13 +39,27 @@ function DummyConstructor() {
 DummyConstructor.prototype = objProto; //set objProto object to be constructor's prototype
 
 let dummy_0 = DummyConstructor();
-console.log(dummy_0.introInProto()); //use method and variable on the prototype object just like nothing
+// console.log(dummy_0.introInProto()); //use method and variable on the prototype object just like nothing
 
-console.log(objProto.isPrototypeOf(dummy_0)); //true
-console.log(DummyConstructor.prototype === objProto); //true
+// console.log(objProto.isPrototypeOf(dummy_0)); //true
+// console.log(DummyConstructor.prototype === objProto); //true
 
 //how to write a factory method that return a function.
 //example a book factory that take title, author, page and read status
+const bookPrototype = {
+  getAuthor: function () {
+    return this.author;
+  },
+  getTitle: function () {
+    return this.title;
+  },
+  setAuthor: function (newAuthor) {
+    this.author = newAuthor;
+  },
+  setTitle: function (newTitle) {
+    this.title = newTitle;
+  },
+};
 
 const Book = function aBookFactoryToReturnABookObject(
   title,
@@ -56,7 +70,13 @@ const Book = function aBookFactoryToReturnABookObject(
   const bookIntro = function () {
     return `${this.title} ${this.author} ${this.pages}, read it: ${this.read}`;
   };
-  return { title, author, pages, read, bookIntro };
+  let obj = { title, author, pages, read, bookIntro };
+  obj.__proto__ = Object.create(bookPrototype);
+  // obj.title = title;
+  // obj.author = author;
+  // obj.pages = pages;
+  // obj.read = read;
+  return obj;
 };
 
 const book_0 = Book("Headfirst JavaScript", "Minh author", 790, true);
@@ -65,5 +85,8 @@ const book_2 = Book("Headfirst HTML and CSS", "Dang author", 490, true);
 const book_3 = Book("Data Structures and Algorithms", "Pro author", 590, false);
 const book_4 = Book("Think like a programmer", "Newbie author", 690, true);
 console.log(book_0);
-console.log(book_0);
+console.log(book_0.__proto__);
 console.log(book_0.bookIntro());
+console.log(book_0.getTitle());
+book_0.setTitle("Ngu");
+console.log(book_0.getTitle("Ngu"));
