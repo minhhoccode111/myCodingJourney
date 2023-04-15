@@ -46,7 +46,19 @@ let dummy_0 = DummyConstructor();
 
 //how to write a factory method that return a function.
 //example a book factory that take title, author, page and read status
-const bookPrototype = {
+
+function aBookFactoryToReturnABookObject(title, author, pages, read) {
+  let obj = Object.create(aBookFactoryToReturnABookObject.prototype);
+  obj.title = title;
+  obj.author = author;
+  obj.pages = pages;
+  obj.read = read;
+  obj.bookIntro = function () {
+    return `${this.title} ${this.author} ${this.pages}, read it: ${this.read}`;
+  };
+  return obj;
+}
+aBookFactoryToReturnABookObject.prototype = {
   getAuthor: function () {
     return this.author;
   },
@@ -61,29 +73,36 @@ const bookPrototype = {
   },
 };
 
-const Book = function aBookFactoryToReturnABookObject(
-  title,
-  author,
-  pages,
-  read
-) {
-  const bookIntro = function () {
-    return `${this.title} ${this.author} ${this.pages}, read it: ${this.read}`;
-  };
-  let obj = { title, author, pages, read, bookIntro };
-  obj.__proto__ = Object.create(bookPrototype);
-  // obj.title = title;
-  // obj.author = author;
-  // obj.pages = pages;
-  // obj.read = read;
-  return obj;
-};
-
-const book_0 = Book("Headfirst JavaScript", "Minh author", 790, true);
-const book_1 = Book("Headfirst Design Pattern", "Hoang author", 730, false);
-const book_2 = Book("Headfirst HTML and CSS", "Dang author", 490, true);
-const book_3 = Book("Data Structures and Algorithms", "Pro author", 590, false);
-const book_4 = Book("Think like a programmer", "Newbie author", 690, true);
+const book_0 = aBookFactoryToReturnABookObject(
+  "Headfirst JavaScript",
+  "Minh author",
+  790,
+  true
+);
+const book_1 = aBookFactoryToReturnABookObject(
+  "Headfirst Design Pattern",
+  "Hoang author",
+  730,
+  false
+);
+const book_2 = aBookFactoryToReturnABookObject(
+  "Headfirst HTML and CSS",
+  "Dang author",
+  490,
+  true
+);
+const book_3 = aBookFactoryToReturnABookObject(
+  "Data Structures and Algorithms",
+  "Pro author",
+  590,
+  false
+);
+const book_4 = aBookFactoryToReturnABookObject(
+  "Think like a programmer",
+  "Newbie author",
+  690,
+  true
+);
 console.log(book_0);
 console.log(book_0.__proto__);
 console.log(book_0.bookIntro());
