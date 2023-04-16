@@ -150,5 +150,41 @@ function PriCtr(priVal = 0) {
 
 const varPriCtr = new PriCtr(69);
 
-console.log(varPriCtr); //PriCtr {getVal: ƒ, incVal: ƒ, editVal: ƒ}
-console.log(varPriCtr.getVal()); //69
+// console.log(varPriCtr); //PriCtr {getVal: ƒ, incVal: ƒ, editVal: ƒ}
+// console.log(varPriCtr.getVal()); //69
+
+//PUBLIC AND PRIVATE SCOPE
+//In many programming languages, you'll hear about "private" and "public" scope. In JavaScript there is no such thing. We can, however, emulate public and private scope through things like Closures
+//By using JavaScript design patterns, such as the Module pattern for example, we can create "public" and "private" scope. A simple way to create private scope, is by wrapping our functions inside a function. As we've learned, functions create scope, which keeps things out of the global scope.
+const module_0 = (function (str) {
+  //private scope inside here
+  const printHello = function (str) {
+    //add function to use in our app
+    return "Hello World " + str;
+  };
+  return printHello;
+})();
+// printHello();// Uncaught ReferenceError: myFunction is not defined
+// when we come to calling our function, it would be out of scope and that's a private scope
+// But what if we want the function to be public? There's a great pattern (called the Module Pattern [and Revealing Module Pattern]) which allows us to scope our functions correctly, using private and public scope and an object.
+//Here is a global namespace, called Module, which contains all of my relevant code for that module:
+let Module = (function () {
+  return {
+    //the return statement here is what returns our public methods, which are accessible in the global scope, and can contain as many methods as we want. We can extend the Module as we wish
+    //below is 4 public methods
+    printHello: function (str) {
+      return `${str} say Hello World from HTML!`;
+    },
+    talking: function () {
+      return "Talking";
+    },
+    greeting: function () {
+      return "Greeting";
+    },
+    walking: function () {
+      return "Walking";
+    },
+  };
+})();
+Module;
+console.log(Module.talking());
