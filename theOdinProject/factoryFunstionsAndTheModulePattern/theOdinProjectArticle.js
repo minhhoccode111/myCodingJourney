@@ -78,7 +78,7 @@ function increasePublicVar() {
 }
 increasePublicVar();
 increasePublicVar();
-console.log(getPublicVar());
+// console.log(getPublicVar());//12
 
 // //FACTORY FUNCTION THAT RETURN A PUBLIC OBJECT
 // function factoryObject(value = 0) {
@@ -106,21 +106,49 @@ console.log(getPublicVar());
 
 //FACTORY FUNCTION THAT RETURN A PUBLIC OBJECT WITH PRIVATE VALUE PROPERTY
 
-function factoryObjPriVal(value = 20) {
-  let val = value;
-  let getVal = function () {
+// function factoryObjPriVal(value = 20) {
+//   let val = value;
+//   let getVal = function () {
+//     return val;
+//   };
+//   let incVal = function () {
+//     val++;
+//   };
+//   let editVal = function (newVal) {
+//     val = newVal;
+//   };
+//   return { getVal, incVal, editVal };
+// }
+
+// const varFOPV_0 = factoryObjPriVal(-5);
+
+// console.log(varFOPV_0);
+// console.log(varFOPV_0.getVal()); //-5
+// varFOPV_0.editVal(100);
+// console.log(varFOPV_0.getVal()); //100
+// varFOPV_0.incVal();
+// console.log(varFOPV_0.getVal()); //101
+// //so every object we create with factory function will has methods to access to its private value with this pattern
+// console.log(varFOPV_0.val); //undefined
+
+//CONSTRUCTOR FUNCTION THAT RETURN A PUBLIC OBJECT WITH PRIVATE VALUE PROPERTY
+function PriCtr(priVal = 0) {
+  if (!(this instanceof PriCtr)) {
+    return new PriCtr(priVal);
+  }
+  let val = priVal;
+  this.getVal = function () {
     return val;
   };
-  let incVal = function () {
+  this.incVal = function () {
     val++;
   };
-  return { getVal, incVal };
+  this.editVal = function (newVal) {
+    val = newVal;
+  };
 }
 
-const varFOPV_0 = factoryObjPriVal(-5);
-const varFOPV_1 = factoryObjPriVal(-50);
+const varPriCtr = new PriCtr(69);
 
-console.log(varFOPV_0);
-console.log(varFOPV_0.getVal()); //-5
-console.log(varFOPV_1);
-console.log(varFOPV_1.getVal()); //-50
+console.log(varPriCtr); //PriCtr {getVal: ƒ, incVal: ƒ, editVal: ƒ}
+console.log(varPriCtr.getVal()); //69
