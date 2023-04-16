@@ -235,6 +235,7 @@ const Player = (name, level) => {
   const getName = () => name;
   const die = () => {
     //die something
+    console.log(`Player ${getName()} has died`);
   };
   const damaged = (num) => {
     health -= num;
@@ -244,12 +245,12 @@ const Player = (name, level) => {
   };
   const attack = (enemy) => {
     if (enemy.getLevel() > getLevel()) {
-      damaged(1);
       console.log(`Enemy ${enemy.getName()} has damaged player ${getName()}`);
+      damaged(1);
     }
     if (enemy.getLevel() <= getLevel()) {
-      enemy.damaged(1);
       console.log(`Player ${getName()} has damaged enemy ${enemy.getName()}`);
+      enemy.damaged(1);
     }
   };
   return { getLevel, getName, attack, damaged };
@@ -257,4 +258,43 @@ const Player = (name, level) => {
 
 const me = Player("Minh", 10);
 const you = Player("Hoang", 5);
-console.log(me, you);
+// console.log(me.getLevel());
+// console.log(me.getName());
+// console.log(you.getName());
+// console.log(you.getLevel());
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you);
+// me.attack(you); //Player you has died
+
+//DESTRUCTURING IN JAVASCRIPT
+// const arr = [1, 2, 3, 4, 5];
+// const [a, b, c, d, e] = arr;
+// console.log(a, b, c, d, e); // 1 2 3 4 5
+// const obj_1 = { arr };
+// console.log(obj_1);
+// {
+//   arr: [1, 2, 3, 4, 5];
+// }
+// const { ...des } = obj_1; //clone obj_1 to des
+// console.log(des === obj_1); //false
+
+//Object.assign() IN JAVASCRIPT
+const obj_assign_0 = {
+  a: 1,
+};
+const obj_assign_1 = {
+  b: 2,
+};
+const with_empty_init = Object.assign({}, obj_assign_0, obj_assign_1);
+console.log(with_empty_init); //{a:1,b:2}
+const without_empty_init = Object.assign(obj_assign_0, obj_assign_1);
+console.log(without_empty_init); //{a:1,b:2}
+console.log(obj_assign_0 === without_empty_init); //true
+//so without init object, Object.assign() will modify first argument object we pass in
