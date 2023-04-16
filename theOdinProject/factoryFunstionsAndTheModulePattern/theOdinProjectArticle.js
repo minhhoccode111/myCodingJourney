@@ -29,12 +29,12 @@ function dummyFactory(name, age) {
 const dFac = dummyFactory("Minh", 23);
 dummyFactory.prototype.type = "Human";
 dummyFactory.prototype.introduction = function () {
-  console.log(this.name, this.age, this.greet());
+  return this.name, this.age, this.greet();
 };
 
 // console.log(dFac); //object with name = "Minh" and age = 23
 // console.log(dFac.type); //Human (on prototype)
-dFac.introduction();
+// console.log(dFac.introduction());
 
 //KNOW ABOUT "THIS" KEYWORD
 let myFunction = function () {
@@ -68,4 +68,59 @@ button.addEventListener("mouseenter", (e) => {
 });
 
 //PRIVATE AND PUBLIC SCOPE
-//
+//PUBLIC SCOPE
+let publicVar = 10; //create a public variable named publicVar
+function getPublicVar() {
+  return publicVar; //create a public function to return public variable named publicVar
+}
+function increasePublicVar() {
+  publicVar++; //create a public function to increase public variable named publicVar by 1
+}
+increasePublicVar();
+increasePublicVar();
+console.log(getPublicVar());
+
+// //FACTORY FUNCTION THAT RETURN A PUBLIC OBJECT
+// function factoryObject(value = 0) {
+//   //factory function has default value property set to 0
+//   let o = Object.create(factoryObject.prototype); //create a new object with Object.create() to set its __proto__ to this factory function prototype object so that it has the __proto__ property does the inheritance
+//   o.value = value; //init object property named value with factory function argument
+//   return o; //then return object
+// }
+// factoryObject.prototype = {
+//   getObjVar: function () {
+//     return this.value;
+//   },
+//   increaseObjVar: function () {
+//     this.value++;
+//   },
+// };
+// let varContainObj = factoryObject(5);
+// console.log(varContainObj);
+// console.log(varContainObj.value);
+// varContainObj.increaseObjVar();
+// varContainObj.increaseObjVar();
+// console.log(varContainObj.getObjVar());
+// console.log(varContainObj.__proto__);
+// console.log(varContainObj.__proto__ === factoryObject.prototype); //true
+
+//FACTORY FUNCTION THAT RETURN A PUBLIC OBJECT WITH PRIVATE VALUE PROPERTY
+
+function factoryObjPriVal(value = 20) {
+  let val = value;
+  let getVal = function () {
+    return val;
+  };
+  let incVal = function () {
+    val++;
+  };
+  return { getVal, incVal };
+}
+
+const varFOPV_0 = factoryObjPriVal(-5);
+const varFOPV_1 = factoryObjPriVal(-50);
+
+console.log(varFOPV_0);
+console.log(varFOPV_0.getVal()); //-5
+console.log(varFOPV_1);
+console.log(varFOPV_1.getVal()); //-50
