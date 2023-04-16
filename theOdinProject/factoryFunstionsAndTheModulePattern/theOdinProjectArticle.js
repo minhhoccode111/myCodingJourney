@@ -168,7 +168,7 @@ const module_0 = (function (str) {
 // when we come to calling our function, it would be out of scope and that's a private scope
 // But what if we want the function to be public? There's a great pattern (called the Module Pattern [and Revealing Module Pattern]) which allows us to scope our functions correctly, using private and public scope and an object.
 //Here is a global namespace, called Module, which contains all of my relevant code for that module:
-let Module = (function () {
+var Module = (function () {
   return {
     //the return statement here is what returns our public methods, which are accessible in the global scope, and can contain as many methods as we want. We can extend the Module as we wish
     //below is 4 public methods
@@ -186,5 +186,42 @@ let Module = (function () {
     },
   };
 })();
-Module;
-console.log(Module.talking());
+// console.log(Module.talking()); //Talking
+
+//So what about private methods? This is where a lot of developers go wrong and pollute the global namespace by dumping all their functions in the global scope. Functions that help our code WORK do not need to be in the global scope, only the API calls do - things that NEED to be accessed globally in order to work. Here's how we can create private scope, by NOT returning functions.
+var Module = (function () {
+  const privateFunc = function () {
+    //this is a private function because it has not been returned by outer function
+    return `Hello world private function`;
+  };
+  const publicFunc = function () {
+    //this is a public function because it has been returned by outer function
+    return `Hello world public function`;
+    // return privateFunc(); //has access to privateFunc, we can call it
+  };
+  return {
+    value: 10,
+    publicFunc,
+  };
+})();
+// console.log(Module.value); //10
+// console.log(Module.publicFunc()); //Hello world public function
+// console.log(Module.privateFunc()); //Error because it is private function
+//This means that publicFunc can be called, but privateFunc can't, as it's privately scoped. There privately scoped functions are things like helpers, addClass, removeClass, Ajax/XHR, Array, Object, etc.Anything you can think of.
+//So anything in the same scope has access to anything in the same scope, even after the function has been returned. Which means, out public methods have access to our private ones, so they can still interact but are unaccessible in the global scope.
+//This allows a very powerful level of interactivity, as well as code security. A very important part of JavaScript is ensuring security, which is exactly WHY we cannot afford to put all functions in the global scope as they'll be publicly available, which makes them open to vulnerable attacks.
+//One neat naming convention is to begin private methods with an underscore, which visually helps you differentiate between private and public methods.
+var Module = (function () {
+  const _privateFunc = function () {
+    return "Hello world from private method";
+  };
+  const publicFunc = function () {
+    return "Hello world from public method";
+  };
+  const callPrivateFunc = function () {
+    return _privateFunc();
+  };
+  return { publicFunc, callPrivateFunc };
+})();
+// console.log(Module.publicFunc()); //Hello world from public method
+// console.log(Module.callPrivateFunc()); //Hello world from private method
