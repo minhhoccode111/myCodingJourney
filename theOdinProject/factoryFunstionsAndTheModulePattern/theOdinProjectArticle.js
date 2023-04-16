@@ -225,3 +225,36 @@ var Module = (function () {
 })();
 // console.log(Module.publicFunc()); //Hello world from public method
 // console.log(Module.callPrivateFunc()); //Hello world from private method
+
+//THE ODIN PROJECT EXAMPLE WRITING ANY SORT OF GAME
+//We're probably going to want objects to describe our players and encapsulate all of the things our players can do (function!)
+
+const Player = (name, level) => {
+  let health = level * 2;
+  const getLevel = () => level;
+  const getName = () => name;
+  const die = () => {
+    //die something
+  };
+  const damaged = (num) => {
+    health -= num;
+    if (health <= 0) {
+      die();
+    }
+  };
+  const attack = (enemy) => {
+    if (enemy.getLevel() > getLevel()) {
+      damaged(1);
+      console.log(`Enemy ${enemy.getName()} has damaged player ${getName()}`);
+    }
+    if (enemy.getLevel() <= getLevel()) {
+      enemy.damaged(1);
+      console.log(`Player ${getName()} has damaged enemy ${enemy.getName()}`);
+    }
+  };
+  return { getLevel, getName, attack, damaged };
+};
+
+const me = Player("Minh", 10);
+const you = Player("Hoang", 5);
+console.log(me, you);
