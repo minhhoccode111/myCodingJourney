@@ -68,3 +68,15 @@ const hoang = Nerd("Hoang", "Senior");
 // console.log(hoang.getName());
 // console.log(hoang.greeting());
 // console.log(hoang.intro());
+
+//CLOSURE IN JAVASCRIPT
+//Definition
+//A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). IN OTHER WORDS, A CLOSURE GIVES YOU ACCESS TO AN OUTER FUNCTION'S SCOPE FROM AN INNER FUNCTION. In JavaScript, closures are created every time a function is created, at function creation time.
+//To use a closure, define a function inside another function and expose it. To expose a function, return it or pass it to another function.
+//The inner function will have access to the variables in the outer function scope, even after the outer function has returned
+//USING CLOSURES
+//Among other things, closures are commonly used to give objects data privacy. Data privacy is an essential property that helps us program to an interface, not an implementation. This is an important concept that helps us build more robust software because implementation details are more likely to change in breaking ways than interface contracts
+//In javascript, closures are the primary mechanism used to enable data privacy.
+//When you use closures for data privacy, the enclosed variables are only in scope within the containing (outer) function.
+//You can't get at the data from an outside scope except through the object's privileged methods.
+//In JavaScript, any exposed method defined within the closure scope is privileged
