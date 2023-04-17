@@ -293,8 +293,8 @@ const obj_assign_1 = {
   b: 2,
 };
 const with_empty_init = Object.assign({}, obj_assign_0, obj_assign_1);
-console.log(with_empty_init); //{a:1,b:2}
+// console.log(with_empty_init); //{a:1,b:2}
 const without_empty_init = Object.assign(obj_assign_0, obj_assign_1);
-console.log(without_empty_init); //{a:1,b:2}
-console.log(obj_assign_0 === without_empty_init); //true
+// console.log(without_empty_init); //{a:1,b:2}
+// console.log(obj_assign_0 === without_empty_init); //true
 //so without init object, Object.assign() will modify first argument object we pass in
