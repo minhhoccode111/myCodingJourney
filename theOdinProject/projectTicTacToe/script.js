@@ -169,3 +169,51 @@ function Cell() {
   const getValue = () => value;
   return { addToken, getValue };
 }
+
+//Factory function to create players
+function Player(name, token) {
+  const getName = () => name;
+  const getToken = () => token;
+  return { getName, getToken };
+}
+
+//The GameController will be responsible for controlling the flow and state of the game's turns, as well as whether anybody has won the game
+function GameController(p1Name = "Player One", p2Name = "Player Two") {
+  const board = Gameboard();
+  const players = [Player(p1Name, "x"), Player(p2Name, "o")];
+  let activePlayer = players[0];
+  const getActivePlayer = () => activePlayer;
+  const switchTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+  const printNewRound = () => {
+    board.printBoard();
+    console.log(`${getActivePlayer().getName()}'s turn.`);
+  };
+  const playTurn = (column) => {
+    //Drop a token for the current player
+    console.log(
+      `Dropping ${getActivePlayer().getName()}'s token into column ${column}...`
+    );
+    board.dropToken(column, getActivePlayer().getToken());
+
+    //This is where we would check for a winner and handle that logic
+
+    //Such as a win message
+
+    //Switch player turn
+    switchTurn();
+    printNewRound();
+  };
+
+  //Initial play game message
+  printNewRound();
+
+  //For the console version, we will only use playTurn, but we will need getActivePlayer for the UI version, so I'm revealing it now
+  return {
+    playTurn,
+    getActivePlayer,
+  };
+}
+
+const game = GameController();
