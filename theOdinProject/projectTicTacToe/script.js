@@ -110,6 +110,8 @@ function Gameboard() {
 
   //This will be the method of getting the entire board that our UI will eventually need to render it.
   const getBoard = () => board;
+  const getRows = () => rows;
+  const getColumns = () => columns;
 
   //In order to drop a token, we need to find what the lowest point of the selected column is, *then* change that cell's value to the player number
   const dropToken = (column, player) => {
@@ -125,8 +127,8 @@ function Gameboard() {
         break;
       }
     }
-    //if lowest didn't change (means all cells have been marked)
-    if (!lowest) {
+    //if lowest didn't change (means all cells of that column have been marked)
+    if (!(lowest >= 0)) {
       //then alert
       alert("Invalid move!");
       //and return
@@ -143,13 +145,16 @@ function Gameboard() {
     const boardWithCellValue = board.map((row) =>
       row.map((cell) => cell.getValue())
     );
-    console.log(boardWithCellValue);
+    console.table(boardWithCellValue);
+    // console.log(boardWithCellValue);
   };
 
   //Here we provide an interface for the rest of our application to interact with the board
   return {
     printBoard,
     getBoard,
+    getRows,
+    getColumns,
     dropToken,
   };
 }
@@ -190,6 +195,74 @@ function GameController(p1Name = "Player One", p2Name = "Player Two") {
     board.printBoard();
     console.log(`${getActivePlayer().getName()}'s turn.`);
   };
+
+  const checkWin = (tokenOfActivePlayer) => {
+    //Then we loop from the bottom row of the board to the top row
+    //We loop from bottom because we will likely to meet a win condition from here
+    //Check for rows
+    for (let i = board.getRows() - 1; i >= 0; i--) {
+      //Then we loop from left to right except 3 last columns because we will take 4 continuously columns
+      for (let j = 0; j <= board.getColumns() - 4; j++) {
+        let allTheSame = [
+          board.getBoard()[i][j],
+          board.getBoard()[i][j + 1],
+          board.getBoard()[i][j + 2],
+          board.getBoard()[i][j + 3],
+        ].every((el) => el.getValue() === tokenOfActivePlayer);
+        if (allTheSame) {
+          alert(`${getActivePlayer().getName()} is the winner!`);
+          return;
+        }
+        //add a condition to check if one of four continuously numbers is empty then don't push these four continuously numbers to the rowsWin to check later (because we don't have to check if some of them are empty)
+      }
+    }
+    let columnsWin = [];
+    for (let i = board.getRows() - 1; i >= 3; i--) {
+      for (let j = 0; j < board.getColumns(); j++) {
+        let allTheSame = [
+          board.getBoard()[i][j],
+          board.getBoard()[i - 1][j],
+          board.getBoard()[i - 2][j],
+          board.getBoard()[i - 3][j],
+        ].every((el) => el.getValue() === tokenOfActivePlayer);
+        if (allTheSame) {
+          alert(`${getActivePlayer().getName()} is the winner!`);
+          return;
+        }
+      }
+    }
+
+    for (let i = board.getRows() - 1; i >= 3; i--) {
+      for (let j = 0; j <= board.getColumns() - 4; j++) {
+        let allTheSame = [
+          board.getBoard()[i][j],
+          board.getBoard()[i - 1][j + 1],
+          board.getBoard()[i - 2][j + 2],
+          board.getBoard()[i - 3][j + 3],
+        ].every((el) => el.getValue() === tokenOfActivePlayer);
+        if (allTheSame) {
+          alert(`${getActivePlayer().getName()} is the winner!`);
+          return;
+        }
+      }
+    }
+    let crossBottomRightToTopLeft = []; //about 12 cross top-bottom
+    for (let i = board.getRows() - 1; i >= 3; i--) {
+      for (let j = board.getColumns() - 1; j >= 3; j--) {
+        let allTheSame = [
+          board.getBoard()[i][j],
+          board.getBoard()[i - 1][j - 1],
+          board.getBoard()[i - 2][j - 2],
+          board.getBoard()[i - 3][j - 3],
+        ].every((el) => el.getValue() === tokenOfActivePlayer);
+        if (allTheSame) {
+          alert(`${getActivePlayer().getName()} is the winner!`);
+          return;
+        }
+      }
+    }
+  }; //change back to normal function
+
   const playTurn = (column) => {
     //Drop a token for the current player
     console.log(
@@ -200,15 +273,15 @@ function GameController(p1Name = "Player One", p2Name = "Player Two") {
     //This is where we would check for a winner and handle that logic
 
     //Such as a win message
-
+    printNewRound();
+    checkWin(getActivePlayer().getToken());
     //Switch player turn
     switchTurn();
-    printNewRound();
   };
 
   //Initial play game message
   printNewRound();
-
+  console.log(activePlayer.getToken());
   //For the console version, we will only use playTurn, but we will need getActivePlayer for the UI version, so I'm revealing it now
   return {
     playTurn,
