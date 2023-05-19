@@ -139,3 +139,56 @@ console.log(new DateFormatter("January 1, 2001 23:15:30").getFormatterDate());
 //DESCRIPTION
 //The extends keyword can be used to subclass custom classes as well as built-in objects.
 //Any constructor that can be called with new and has the prototype property can be the candidate for the parent class. The two conditions must both hold -- for example, bound functions and proxy can be constructed, but they don't have a prototype property, so they cannot be subclassed
+
+function OldStyleClass() {
+  this.someProperty = 1;
+}
+OldStyleClass.prototype.someMethod = function () {};
+
+class ChildClass extends OldStyleClass {}
+
+class ModernClass {
+  someProperty = 1;
+  someMethod() {}
+}
+
+class AnotherChildClass extends ModernClass {}
+
+//The prototype property of the ParentClass must be an Object or null, but you would rarely worry about this in practice, because a non-object prototype doesn't behave as it should anyway. (It's ignored by the new operator.)
+
+function ParentClass() {}
+ParentClass.prototype = 3;
+
+// class ChildClass extends ParentClass{}
+//Uncaught TypeError: Class extends value does not have valid prototype property 3
+
+console.log(Object.getPrototypeOf(new ParentClass()));
+//[Object: null prototype]{}
+//Not actually a number!
+
+//Extends sets the prototype for both ChildClass and ChildClass.prototype
+
+class ParentClass {}
+class ChildClass extends ParentClass {}
+
+//Allows inheritance of static properties
+Object.getPrototypeOf(ChildClass) === ParentClass;
+//Allows inheritance of instance properties
+Object.getPrototypeOf(ChildClass.prototype) === ParentClass.prototype;
+
+//The right-hand side of extends does not have to be an identifier. You can use any expression that evaluates to a constructor. This is often useful to create mixins. The "this" value in the extends expression is the "this" surrounding the class definition, and referring to the class's name is a ReferenceError because the class is not initialized yet. await and yield work as expected in this expression
+
+class SomeClass extends class {
+  constructor() {
+    console.log("Base class");
+  }
+} {
+  constructor() {
+    super();
+    console.log("Derived class");
+  }
+}
+
+new SomeClass();
+//Base class
+//Derived class
