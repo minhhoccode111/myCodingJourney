@@ -192,3 +192,30 @@ class SomeClass extends class {
 new SomeClass();
 //Base class
 //Derived class
+
+//MIX-INS
+//Abstract subclasses or mix-ins are templates for classes. A class can only have a single superclass, so multiple inheritance from tooling classes, for example, is not possible. The functionality must be provided by the superclass.
+
+//A function with a superclass as input and a subclass extending that superclass as output can be used to implement mix-ins:
+
+const calculatorMixin = (BassClass) => {
+  return class extends BassClass {
+    calc() {
+      //Do something here
+    }
+  };
+};
+
+const randomizedMixin = (BassClass) => {
+  return class extends BassClass {
+    randomize() {
+      //Do something here
+    }
+  };
+};
+
+// Now a class that uses these min-ins can then be written like this:
+class Foo {}
+class Bar extends calculatorMixin(randomizedMixin(Foo)) {
+  //Do something here
+}
