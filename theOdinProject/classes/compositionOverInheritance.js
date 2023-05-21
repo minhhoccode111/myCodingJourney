@@ -168,3 +168,31 @@ console.log(smallRobotKiller);
 smallRobotKiller.kill();
 smallRobotKiller.drive();
 console.log(smallRobotKiller.getPosition());
+
+//Static method
+//Static method isn't set on the prototype, instead it set on the class itself (or the constructor function)
+
+class StaticMethodClassTest {
+  static staticMethod() {}
+  prototypeMethod() {}
+}
+
+//And that similar to this constructor function
+function StaticMethodFunctionTest() {}
+StaticMethodFunctionTest.prototype.prototypeMethod = function () {};
+StaticMethodFunctionTest.staticMethod = function () {};
+
+//
+//And the "this" keyword in a static method in a class is point back to that class
+//ex:
+class StaticTest {
+  static World() {
+    return "World";
+  }
+
+  static Hello() {
+    return "Hello " + this.World();
+  }
+}
+
+console.log(StaticTest.Hello()); //Hello World
