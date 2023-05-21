@@ -75,19 +75,19 @@ console.log(pri);
 //INHERITANCE
 //The extends keyword is used in class declarations or class expressions to create a class as a child of another constructor (either a class or a function)
 
-class Animal {
-  constructor(name, weight) {
-    this.name = name;
-    this.weight = weight;
-  }
+// class Animal {
+//   constructor(name, weight) {
+//     this.name = name;
+//     this.weight = weight;
+//   }
 
-  speak() {
-    console.log(`${this.name} makes a noise!`);
-  }
-  eat() {
-    console.log("nom nom");
-  }
-}
+//   speak() {
+//     console.log(`${this.name} makes a noise!`);
+//   }
+//   eat() {
+//     console.log("nom nom");
+//   }
+// }
 
 class Dog extends Animal {
   tail = 1;
@@ -168,8 +168,8 @@ console.log(Object.getPrototypeOf(new ParentClass()));
 
 //Extends sets the prototype for both ChildClass and ChildClass.prototype
 
-class ParentClass {}
-class ChildClass extends ParentClass {}
+// class ParentClass {}
+// class ChildClass extends ParentClass {}
 
 //Allows inheritance of static properties
 Object.getPrototypeOf(ChildClass) === ParentClass;
@@ -219,3 +219,17 @@ class Foo {}
 class Bar extends calculatorMixin(randomizedMixin(Foo)) {
   //Do something here
 }
+
+//Is "Class" in ES6 The New "Bad" Part?
+
+//It's a "good" part because:
+//1. Class is something everyone learns and making the syntax better is a good thing
+//2. It's an optional feature and there are other ways to create objects like factory functions
+//3. Using it for limited purpose is fine.
+
+//It's a "bad" part because:
+//1. The concept of "class" doesn't exist in JavaScript
+//2. Concept of classes makes things brittle. Prototypes are better and very flexible
+//3. It guides people away from goodness and power of functional programming
+
+//
